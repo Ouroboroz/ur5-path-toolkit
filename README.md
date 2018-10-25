@@ -7,9 +7,9 @@ Development of a toolkit using the Blender Python API and URscript API to genera
 This toolkit is a script meant to be used concurrently with Blender. 
  
 ### Prerequisites
-'''
+```
 Blender - https://www.blender.org/download/
 Python 3.XX - https://www.python.org/downloads/
-
+```
 ### Installing
 To install, simply download the script and run it in Blender. The output animation path should be automatically generated.
