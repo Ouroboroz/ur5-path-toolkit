@@ -1,7 +1,9 @@
 import bpy
 
 '''
-Focuses on two meshs and checks for intersection
+Focuses on two meshs and checks for intersection - T/F
+
+Includes function that returns 2-tuple of the first mesh pair found
 '''
 
 def _createBackgroundScene(name = "backgroundScene"):
@@ -123,3 +125,19 @@ def check_intersection(obj, obj2):
 	scene.update()
 
 	return intersect
+
+def return_intersecting_meshs():
+	'''
+	Returns the first pair of meshes that intersect
+
+	Hard Coded for least computation
+	'''
+	mesh_names = {
+		"UR5_Base",
+		"UR5_Elbow",
+		#"UR5_Mount", - extraneous because it is too low and small
+		"UR5_Shoulder",
+		"UR5_Wrist_1",
+		"UR5_Wrist_2",
+		"UR5_Wrist_3"
+	}
