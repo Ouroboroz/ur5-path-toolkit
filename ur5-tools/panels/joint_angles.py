@@ -5,14 +5,13 @@ from math import degrees
 Adds a panel to main 3D View screen that shows the angles of each joint
 '''
 
+'''
+Calculates the orientation/angle of a given bone
+In respect to global orientation or the motherbone in 3D
+
+Returns a tuple the angles(radians) of rotation in 3 axis
+'''
 def _get_local_orientation(pose_bone):
-	'''
-	Calculates the orientation/angle of a given bone
-	In respect to global orientation or the motherbone in 3D
-
-	Returns a tuple the angles(radians) of rotation in 3 axis
-	'''
-
     local_orientation = pose_bone.matrix_channel.to_euler()
  
     if pose_bone.parent is None:
@@ -26,13 +25,12 @@ def _get_local_orientation(pose_bone):
  
     return (orientation.x, orientation.y, orientation.z)
  
-def _get_joint_angles(context):
-	'''
-	Calculates the angles of each joint
-	
-	Returns the list of angles of the joints in radians
-	'''
+'''
+Calculates the angles of each joint
 
+Returns the list of angles of the joints in radians
+'''
+def _get_joint_angles(context):
     arm = context.scene.objects['Armature']
     pose = arm.pose
     bones = pose.bones
@@ -69,23 +67,22 @@ def _get_joint_angles(context):
     return joint_angles
  
  
+'''
+Panel to display the angles of each joint
+Allows for easier humans to correct IK contraints
+'''
 class SimpleBoneAnglesPanel(bpy.types.Panel):
-	'''
-	Panel to display the angles of each joint
-	Allows for easier humans to correct IK contraints
-	'''
-
     bl_label = "Joint Angles"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
- 	joint_names = ['Base','Shoulder','Elbow','Wrist1','Wrist2','Wrist3']
-   	joint_angles = []
+	joint_names = ['Base','Shoulder','Elbow','Wrist1','Wrist2','Wrist3']
+	joint_angles = []
     def draw(self, context):
-        self.joint_angles = _get_joint_angles(context)
+        SimpleBoneAnglesPanel.joint_angles = _get_joint_angles(context)
         row = self.layout.row()
         for z in range(len(joint_angles)):
             row = self.layout.row()
-            row.label(text = joint_names[z] + ': {:.3}'.format(degrees(joint_angles[z])))
+            row.label(text = SimpleBoneAnglesPanel.joint_names[z] + ': {:.3}'.format(degrees(SimpleBoneAnglesPanel.joint_angles[z])))
 
-def addPanel():
-	bpy.utils.register_class(SimpleBoneAnglesPanel)
+
+bpy.utils.register_class(SimpleBoneAnglesPanel)

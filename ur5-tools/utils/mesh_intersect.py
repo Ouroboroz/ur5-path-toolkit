@@ -59,7 +59,7 @@ def _bmesh_from_object(obj, transform = True, triangulate = True, apply_modifier
 		for layers_name in dir(elem.layers):
 			if not layers_name.startswith("_"):
 				layers = getattr(elem.layers, layers_name)
-				for layer_name, layer in layer.items():
+				for layer_name, layer in layers.items():
 					layers.remove(layer)
 
 	if transform:
