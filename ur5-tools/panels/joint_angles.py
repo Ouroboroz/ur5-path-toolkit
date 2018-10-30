@@ -76,13 +76,13 @@ class SimpleBoneAnglesPanel(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
 	joint_names = ['Base','Shoulder','Elbow','Wrist1','Wrist2','Wrist3']
-	joint_angles = []
+	joint_angles = _get_joint_angles(bpy.context)
     def draw(self, context):
         SimpleBoneAnglesPanel.joint_angles = _get_joint_angles(context)
         row = self.layout.row()
-        for z in range(len(joint_angles)):
+        for z in range(len(SimpleBoneAnglesPanel.joint_angles)):
             row = self.layout.row()
-            row.label(text = SimpleBoneAnglesPanel.joint_names[z] + ': {:.3}'.format(degrees(SimpleBoneAnglesPanel.joint_angles[z])))
+            row.label(text = SimpleBoneAnglesPanel.joint_names[z] + ': {}'.format(degrees(SimpleBoneAnglesPanel.joint_angles[z])))
 
 
 bpy.utils.register_class(SimpleBoneAnglesPanel)
