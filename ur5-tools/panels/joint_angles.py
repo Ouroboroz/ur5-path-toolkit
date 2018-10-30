@@ -1,6 +1,6 @@
 import bpy
 from math import degrees
- 
+import math
 '''
 Adds a panel to main 3D View screen that shows the angles of each joint
 '''
