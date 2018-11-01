@@ -1,12 +1,13 @@
 import bpy
+import bmesh
 
 '''
 Focuses on two meshs and checks for intersection - T/F
 
-Includes function that returns 2-tuple of the first mesh pair found
+Includes function that returns 2-tuple of the names of the first mesh pair found
 '''
 
-def _createBackgroundScene(name = "backgroundScene"):
+def _create_background_scene(name = "backgroundScene"):
 	"""
 	Returns a background scene for work
 	Name defaults to 'backgroundScene'
@@ -32,6 +33,17 @@ def _createBackgroundScene(name = "backgroundScene"):
 	bpy.data.scenes[tmpSceneName].name = name
 	scene = bpy.data.scenes[name]
 	return scene
+
+def _delete_background_scene():
+	"""
+	Deletes the background scene to conserve memory
+
+	"""
+
+	origSceneName = bpy.context.scene.sceneName
+	bpy.context.screen.scene = bpy.data.scenes["backgroundScene"]
+	bpy.ops.scene.delete()
+	bpy.context.screen.scene = bpy.data.scenes[origSceneName]
 
 def _bmesh_from_object(obj, transform = True, triangulate = True, apply_modifiers = False):
 	"""
@@ -89,7 +101,7 @@ def check_intersection(obj, obj2):
 		bm2, bm = bm, bm2
 
 	#Create a new mesh for ray cast testing
-	scene = _createBackgroundScene()
+	scene = _create_background_scene()
 	me_tmp = bpy.data.meshes.new(name="temp")
 	bm2.to_mesh(me_tmp)
 	bm2.free()
@@ -123,21 +135,39 @@ def check_intersection(obj, obj2):
 	bpy.data.meshes.remove(me_tmp)
 
 	scene.update()
-
+	_delete_background_scene() #Potentially slows the script down since a new scene has to be created and deleted each iteration
 	return intersect
 
 def return_intersecting_meshs():
 	'''
-	Returns the first pair of meshes that intersect
+	Returns the first pair of meshe that intersect
+
+	Returns a tuple string of names of meshes or ('N','A')
 
 	Hard Coded for least computation
 	'''
-	mesh_names = {
-		"UR5_Base",
-		"UR5_Elbow",
+	mesh_names = [
+		"UR5_Base", #0
+		"UR5_Elbow", #1
 		#"UR5_Mount", - extraneous because it is too low and small
-		"UR5_Shoulder",
-		"UR5_Wrist_1",
-		"UR5_Wrist_2",
-		"UR5_Wrist_3"
-	}
+		"UR5_Shoulder", #2
+		"UR5_Wrist_1", #3
+		"UR5_Wrist_2", #4
+		"UR5_Wrist_3" #5
+	]
+	test_pairs = [ 
+		(3,1),
+		(5,1),
+		(4,1),
+		(3,2),
+		(5,2),
+		(4,2),
+		(3,0),
+		(5,0),
+		(4,0)
+	]
+	for pair in test_pairs:
+		if check_intersection(obj.data.objects[mesh_names[pair[0]]], obj.data.objects[mesh_names[pair[1]]]):
+			return (mesh_names[pair[0]],mesh_names[pair[1]])
+
+	return ('N','A')
