@@ -5,6 +5,8 @@ In most cases, we want the Elbow mesh to be pointing semi-downwards in the -z di
 
 In general, the Elbow Mesh, Shoulder mesh and the table would make a "triangle"
 
+Extended to other meshes/bones
+
 Returns if the direcftion of the Elbow mesh is right
 """
 
