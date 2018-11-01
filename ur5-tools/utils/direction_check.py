@@ -7,22 +7,22 @@ In general, the Elbow Mesh, Shoulder mesh and the table would make a "triangle"
 
 Extended to other meshes/bones
 
-Returns if the direcftion of the Elbow mesh is right
+Returns if the direction of the Elbow mesh is right
 """
 
 def direction_vector(start_bone, end_bone):
-	'''
+	"""
 	Returns the vector from the head of the start_bone to the tail of the end_bone
-	'''
+	"""
 	start = start_bone.head
 	end = end_bone.tail
 
 	return end-start
 
 def check_elbow_direction():
-	'''
+	"""
 	Returns if the elbow has a negative z direction
-	'''
+	"""
 	start_bone = obj.data.objects['Armature'].pose.bones['Shoulder']
 	end_bone = obj.data.objects['Armature'].pose.bones['Elbow']
 	vector = direction_vector(start_bone, end_bone)

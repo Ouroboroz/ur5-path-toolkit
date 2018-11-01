@@ -1,11 +1,11 @@
 import bpy
 import bmesh
 
-'''
+"""
 Script to check if any of the mesh goes below the safe table area
 
 Returns the mesh that does do so
-'''
+"""
 
 bottom_limit = 0.0
 
@@ -13,9 +13,9 @@ def set_bottom_limit(z):
 	this.bottom_limit = z
 
 def _bmesh_from_object(obj):
-	'''
+	"""
 	Returns the transformed bmesh for an object mesh
-	'''
+	"""
 
 
 	assert(obj.type == 'MESH')
@@ -47,9 +47,9 @@ def _bmesh_from_object(obj):
 	return bm
 
 def check_limit(obj):
-	'''
+	"""
 	Returns if input mesh goes below the bottom limit
-	'''
+	"""
 
 	me = _bmesh_from_object(obj)
 	verts = me.verts
@@ -61,11 +61,11 @@ def check_limit(obj):
 	return smallest_z <= bottom_limit
 
 def return_limiting_mesh():
-	'''
+	"""
 	Returns the first mesh as a String that goes below the bottom limit
 	
 	Hard coded for least computation
-	'''
+	"""
 	mesh_names = [
 		#"UR5_Base", - will never move in the z axis
 		"UR5_Elbow",
