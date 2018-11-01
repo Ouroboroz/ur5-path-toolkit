@@ -40,7 +40,7 @@ def _delete_background_scene():
 
 	"""
 
-	origSceneName = bpy.context.scene.sceneName
+	origSceneName = bpy.context.scene.name
 	bpy.context.screen.scene = bpy.data.scenes["backgroundScene"]
 	bpy.ops.scene.delete()
 	bpy.context.screen.scene = bpy.data.scenes[origSceneName]
