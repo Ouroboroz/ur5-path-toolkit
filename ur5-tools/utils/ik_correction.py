@@ -49,3 +49,14 @@ def fix_bottom_limit():
 	"""
 	while(bottom_limit_check.return_limiting_mesh() != None):
 		_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Shoulder"],0.5/180*math.pi,0)
+
+def fix_mesh_intersect():
+	"""
+	Fixes the ik contraints of a certain bone so meshes will not intersect with itself
+	"""
+
+def fix_direction():
+	"""
+	Fixes the direction of the Elbow mesh
+	"""
+	
