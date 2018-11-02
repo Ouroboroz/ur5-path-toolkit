@@ -170,4 +170,4 @@ def return_intersecting_meshs():
 		if check_intersection(obj.data.objects[mesh_names[pair[0]]], obj.data.objects[mesh_names[pair[1]]]):
 			return (mesh_names[pair[0]],mesh_names[pair[1]])
 
-	return ('N','A')
+	return None

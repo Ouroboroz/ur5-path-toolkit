@@ -68,9 +68,9 @@ def return_limiting_mesh():
 	"""
 	mesh_names = [
 		#"UR5_Base", - will never move in the z axis
-		"UR5_Elbow",
 		#"UR5_Mount", - extraneous because it is too low and small
 		"UR5_Shoulder",
+		"UR5_Elbow",
 		"UR5_Wrist_1",
 		"UR5_Wrist_2",
 		"UR5_Wrist_3"
@@ -78,3 +78,4 @@ def return_limiting_mesh():
 	for name in mesh_names:
 		if(check_limit(bpy.data.objects[name]) == True):
 			return name
+	return None
