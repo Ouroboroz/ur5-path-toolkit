@@ -4,6 +4,15 @@ import math
 """
 Runner script to correct ik contraints to fix the issues brought up by the checks
 """
+def prepare_ik_limits():
+	"""
+	Makes sure the ik_limits are turned on 
+	"""
+
+	bpy.data.objects['Armature'].pose.bones['Shoulder'].use_ik_limit_y = True
+	bpy.data.objects['Armature'].pose.bones['Elbow'].use_ik_limit_y = True
+	bpy.data.objects['Armature'].pose.bones['Wrist1'].use_ik_limit_y = True
+	bpy.data.objects['Armature'].pose.bones['Wrist2'].use_ik_limit_y = True
 
 def _set_ik_contraints(bone, min, max, axis = 'y'):
 	"""
@@ -49,14 +58,37 @@ def fix_bottom_limit():
 	"""
 	while(bottom_limit_check.return_limiting_mesh() != None):
 		_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Shoulder"],0.5/180*math.pi,0)
+	while(mesh_intersect.return_limiting_mesh != None and bpy.data.objects['Armature'].pose.bones["Shoulder"].ik_min_y != 0):
+		_change_ik_contraints(bpy.data.objects['Armature'].pose.bones['Shoulder'],0.5/180*math.pi,0)
 
 def fix_mesh_intersect():
 	"""
 	Fixes the ik contraints of a certain bone so meshes will not intersect with itself
 	"""
+	meshes = mesh_intersect.return_intersecting_mesh()
+	while(meshes != None):
+		if(meshes[0] == "UR5_Shoulder" or meshes[1] == "UR5_Shoulder"):
+			if(bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_min_y != 0):
+				_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Shoulder"],0.5/180*math.pi,0)
+			else: 
+				_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Shoulder"],0,0.5/180*math.pi)
+			if(bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_min_y != 0 and bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_max_y != math.pi):
+				print("Error Encountered Changing Shoulder Intersect")
+				break
+		else(meshes[0] == "UR5_Elbow" or meshes[1] == "UR5_Elbow"):
+			if(bpy.data.objects['Armature'].pose.bones['Elbow'].ik_min_y != 0):
+				_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Elbow"],0.5/180*math.pi,0)
+			else: 
+				_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Elbow"],0,0.5/180*math.pi)
+			if(bpy.data.objects['Armature'].pose.bones['Elbow'].ik_min_y != 0 and bpy.data.objects['Armature'].pose.bones['Elbow'].ik_max_y != math.pi):
+				print("Error Encountered Changing Elbow Intersect")
+				break
+		meshs = mesh_intersect.return_intersecting_mesh()
 
 def fix_direction():
 	"""
 	Fixes the direction of the Elbow mesh
 	"""
 	
+ 
+
