@@ -24,10 +24,10 @@ def _set_ik_contraints(bone, min, max, axis = 'y'):
 	if(axis == 'y'):
 		bone.ik_min_y = min
 		bone.ik_max_y = max
-	else if(axis == 'x'):
+	elif(axis == 'x'):
 		bone.ik_min_x = min
 		bone.ik_max_x = max
-	else if(axis == 'z'):
+	elif(axis == 'z'):
 		bone.ik_min_z = min
 		bone.ik_max_z = max
 	#Refresh the contraints
@@ -39,13 +39,13 @@ def _change_ik_contraints(bone, change_min, change_max , is_increase = True, axi
 
 	The axis will default to 'y' and the change will be assumed to positive
 	"""
-	if(axis = 'y'):
+	if(axis =='y'):
 		bone.ik_min_y += (2*int(is_increase)-1)*change_min
 		bone.ik_max_y += (2*int(is_increase)-1)*change_max
-	if(axis = 'x'):
+	if(axis =='x'):
 		bone.ik_min_x += (2*int(is_increase)-1)*change_min
 		bone.ik_max_x += (2*int(is_increase)-1)*change_max
-	if(axis = 'z'):
+	if(axis =='z'):
 		bone.ik_min_z += (2*int(is_increase)-1)*change_min
 		bone.ik_max_z += (2*int(is_increase)-1)*change_max
 	#Refresh the contraints
@@ -75,7 +75,7 @@ def fix_mesh_intersect():
 			if(bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_min_y != 0 and bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_max_y != math.pi):
 				print("Error Encountered Changing Shoulder Intersect")
 				break
-		else(meshes[0] == "UR5_Elbow" or meshes[1] == "UR5_Elbow"):
+		elif(meshes[0] == "UR5_Elbow" or meshes[1] == "UR5_Elbow"):
 			if(bpy.data.objects['Armature'].pose.bones['Elbow'].ik_min_y != 0):
 				_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Elbow"],0.5/180*math.pi,0)
 			else: 
@@ -90,5 +90,3 @@ def fix_direction():
 	Fixes the direction of the Elbow mesh
 	"""
 	
- 
-
