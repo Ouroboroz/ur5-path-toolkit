@@ -49,14 +49,14 @@ def _change_ik_contraints(bone, change_min, change_max , is_increase = True, axi
 		bone.ik_min_z += (2*int(is_increase)-1)*change_min
 		bone.ik_max_z += (2*int(is_increase)-1)*change_max
 	#Refresh the contraints
-	bpy.data.scene.update()
+	bpy.context.scene.update()
 def fix_bottom_limit():
 	"""
 	Fixes the ik contraints of the shoulder to raise the armature over the safe table area
 
 	As of now, it only changes the shoulder. If more limiting cases come up, more detailed change will be made
 	"""
-	while(bottom_limit_check.return_limiting_mesh() != None):
+	while(bottom_limit_check.return_limiting_mesh() != None and bpy.data.objects['Armature'].pose.bones["Shoulder"].ik_min_y != 0):
 		_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Shoulder"],0.5/180*math.pi,0)
 	while(mesh_intersect.return_limiting_mesh != None and bpy.data.objects['Armature'].pose.bones["Shoulder"].ik_min_y != 0):
 		_change_ik_contraints(bpy.data.objects['Armature'].pose.bones['Shoulder'],0.5/180*math.pi,0)
@@ -72,16 +72,20 @@ def fix_mesh_intersect():
 				_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Shoulder"],0.5/180*math.pi,0)
 			else: 
 				_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Shoulder"],0,0.5/180*math.pi)
-			if(bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_min_y != 0 and bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_max_y != math.pi):
+			if(bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_min_y == 0 and bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_max_y == math.pi):
 				print("Error Encountered Changing Shoulder Intersect")
+				bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_max_y = 0
+				bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_min_y = -math.pi
 				break
 		elif(meshes[0] == "UR5_Elbow" or meshes[1] == "UR5_Elbow"):
 			if(bpy.data.objects['Armature'].pose.bones['Elbow'].ik_min_y != 0):
 				_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Elbow"],0.5/180*math.pi,0)
 			else: 
 				_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Elbow"],0,0.5/180*math.pi)
-			if(bpy.data.objects['Armature'].pose.bones['Elbow'].ik_min_y != 0 and bpy.data.objects['Armature'].pose.bones['Elbow'].ik_max_y != math.pi):
+			if(bpy.data.objects['Armature'].pose.bones['Elbow'].ik_min_y == 0 and bpy.data.objects['Armature'].pose.bones['Elbow'].ik_max_y == math.pi):
 				print("Error Encountered Changing Elbow Intersect")
+				bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_max_y = 0
+				bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_min_y = -math.pi
 				break
 		meshs = mesh_intersect.return_intersecting_mesh()
 
@@ -89,4 +93,11 @@ def fix_direction():
 	"""
 	Fixes the direction of the Elbow mesh
 	"""
-	
+	bpy.data.objects['Armature'].pose.bones.['Elbow'].ik_max_y = math.pi
+	while(direction_check.check_elbow_direction() and bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_min_y != 0):
+		_change_ik_contraints(bpy.data.objects['Armature'].pose.bones["Shoulder"],0.5/180*math.pi,0)
+
+def fix_all():
+	fix_bottom_limit()
+	fix_direction()
+	fix_mesh_intersect()
