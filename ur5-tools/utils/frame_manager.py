@@ -14,7 +14,7 @@ def _get_length(curve):
 	_data = bpy.context.active_object.data
 	edge_length = 0
 	for edge in _data.edges:
-		vert0 = _data.vertices[edges.vertices[0]].co
+		vert0 = _data.vertices[edge.vertices[0]].co
 		vert1 = _data.vertcies[edge.vertices[1]].co
 		edge_length += (vert0-vert1).length
 
