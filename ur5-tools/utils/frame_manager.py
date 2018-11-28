@@ -20,3 +20,9 @@ def _get_length(curve):
 
 	edge_length = '{:.6f}'.format(edge_length)
 	return edge_length
+
+def _set_animation_duration(curve,frames):
+	curve.path_duration = frames
+
+def fix_animation_duration():
+	_set_animation_duration(bpy.data.objects['Curve'],int(_get_length(bpy.data.objects['Curve'])* 10))
