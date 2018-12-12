@@ -18,7 +18,7 @@ def _set_ik_contraints(bone, min, max, axis = 'y'):
 	"""
 	Sets the ik_contraints for the input bone on the input axis. 
 
-	The axis will default to 'y' since that is the rotation axis for bones in the UR5
+	The axis will default to 'y' since that is the rotation axis for bones in the UR5_Shoulder`.
 	"""
 
 	if(axis == 'y'):
@@ -49,7 +49,7 @@ def _change_ik_contraints(bone, change_min, change_max , is_increase = True, axi
 		bone.ik_min_z += (2*int(is_increase)-1)*change_min
 		bone.ik_max_z += (2*int(is_increase)-1)*change_max
 	#Refresh the contraints
-	bpy.context.scene.update()
+	bpy.context.screen.update()
 def fix_bottom_limit():
 	"""
 	Fixes the ik contraints of the shoulder to raise the armature over the safe table area
@@ -65,7 +65,7 @@ def fix_mesh_intersect():
 	"""
 	Fixes the ik contraints of a certain bone so meshes will not intersect with itself
 	"""
-	meshes = mesh_intersect.return_intersecting_mesh()
+	meshs = mesh_intersect.return_intersecting_meshs()
 	while(meshes != None):
 		if(meshes[0] == "UR5_Shoulder" or meshes[1] == "UR5_Shoulder"):
 			if(bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_min_y != 0):
@@ -87,7 +87,7 @@ def fix_mesh_intersect():
 				bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_max_y = 0
 				bpy.data.objects['Armature'].pose.bones['Shoulder'].ik_min_y = -math.pi
 				break
-		meshs = mesh_intersect.return_intersecting_mesh()
+		meshs = mesh_intersect.return_intersecting_meshs()
 
 def fix_direction():
 	"""
